@@ -37,20 +37,66 @@ film_collection = db['filmLibrary']
 #################################
 # Endpoints routes
 ## POST endpoint
-# @app.route('/filmLibrary')
+@app.route('/films', methods=['POST'])
+def post_film():
+
+    data = request.json
+
+    if not data:
+        return jsonify( {"error", "Cannot POST, no data provided"} ), 400
+    
+    # .insert_one() Method
+    result = film_collection.insert_one(data)
+
 
 ## GET ALL endpoint
-# @app.route('/filmLibrary')
+@app.route('/films', methods=['GET'])
+def get_all():
+
+    # find() Method
+    films = list(film_collection.find())
+
+    if not films:
+        return jsonify( {"error", "Cannot GET ALL, no data retuned"} ), 400
+
+    for film in films:
+
+        # item[the id but _protected]
+        film['_id'] = str(film['_id'])
+
+    return jsonify(films)
+
+
 
 ## GET endpoint
-# @app.route('/filmLibrary/<film_id>', methods=['GET'])
-# def get_endpoint():
-#    book = books_collection
+@app.route('/films/<film_id>', methods=['GET'])
+def get_one(film_id):
 
-## DELETE endpoint
-#@app.route('/filmLibrary/<film_id>')
+    film = film_collection.find_one( { "_id" : ObjectId(film_id) } )
+
+    if not film:
+        return jsonify( {"error", "Cannot GET ONE, no data retuned"} ), 400
+
+    film['_id'] = str(film['_id'])
+    return jsonify(film)
 
 
+
+## DELETE ONE endpoint
+@app.route('/films/<film_id>')
+def delete_one(film_id):
+
+    # delete_one()
+    result = film_collection.delete_one( { "_id" : ObjectId(film_id) } )
+
+    if result.deleted_count is not 0:
+        
+        return jsonify( { "status" : "Success" } )
+
+    else:
+
+        return jsonify( { "error" : "Object not found" }, 400 )
+    
 
 #################################
 if __name__ == '__main__':
