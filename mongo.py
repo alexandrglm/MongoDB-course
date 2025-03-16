@@ -4,6 +4,8 @@
 ############################################################################
 # Back-end for MongoDB-Course
 #
+# Subject: A film library db with my favourites films and their data
+#
 # Requirements:
 # - Flask
 #
@@ -31,24 +33,22 @@ client = MongoClient('mongodb://localhost:27017')
 db = client['db']
 
 # Collections
-books_collection = db['books']
-users_collections = db['users']
+film_collection = db['filmLibrary']
 #################################
 # Endpoints routes
 ## POST endpoint
-# @app.route('/books')
-
+# @app.route('/filmLibrary')
 
 ## GET ALL endpoint
-# @app.route('/books')
+# @app.route('/filmLibrary')
 
 ## GET endpoint
-# @app.route('/books/<book_id>', methods=['GET'])
-# def get_book():
+# @app.route('/filmLibrary/<film_id>', methods=['GET'])
+# def get_endpoint():
 #    book = books_collection
 
 ## DELETE endpoint
-#@app.route('/books/<book_id>')
+#@app.route('/filmLibrary/<film_id>')
 
 
 
